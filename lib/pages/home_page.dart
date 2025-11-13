@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizappg14/models/question_model.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -6,23 +7,56 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Lista Preguntas
-  List<String> questions = [
-    "El hombre llegó a la luna",
-    "¿Has cenado hoy?",
-    "¿Saliste ayer?",
-    "¿Has desayunado?",
-    "¿Sientes frio?",
-    "El sol es una estrella",
-    "Flutter usa Dart",
+  List<Widget> score = [];
+
+  List<QuestionModel> questions = [
+    QuestionModel(question: "El hombre llegó a la luna", asnwer: true),
+    QuestionModel(question: "¿Has cenado hoy?", asnwer: false),
+    QuestionModel(question: "¿Saliste ayer?", asnwer: false),
+    QuestionModel(question: "¿Has desayunado?", asnwer: true),
+    QuestionModel(question: "¿Sientes frio?", asnwer: false),
+    QuestionModel(question: "El sol es una estrella", asnwer: true),
+    QuestionModel(question: "Flutter usa Dart", asnwer: true),
   ];
   int questionIndex = 0;
+
+  Widget itemScore(String numberQuestion, bool isCorrect) {
+    return Row(
+      children: [
+        Text(
+          numberQuestion,
+          style: TextStyle(color: Colors.white, fontSize: 18),
+        ),
+        Icon(
+          isCorrect ? Icons.check : Icons.close,
+          color: isCorrect ? Colors.greenAccent : Colors.redAccent,
+        ),
+      ],
+    );
+  }
 
   void nextQuestion() {
     if (questionIndex < questions.length - 1) {
       questionIndex++;
     } else {
       print("Se acabaron las preguntas");
+    }
+    setState(() {});
+  }
+
+  void checkAnswer(bool userAnswer) {
+    bool correctAnswer = questions[questionIndex].asnwer;
+
+    if (userAnswer == correctAnswer) {
+      score.add(itemScore((questionIndex + 1).toString(), true));
+    } else {
+      score.add(itemScore((questionIndex + 1).toString(), false));
+    }
+
+    if (questionIndex < questions.length - 1) {
+      questionIndex++;
+    } else {
+      print("Fin del cuestionario ");
     }
     setState(() {});
   }
@@ -46,7 +80,7 @@ class _HomePageState extends State<HomePage> {
               flex: 5,
               child: Center(
                 child: Text(
-                  questions[questionIndex],
+                  questions[questionIndex].question,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 22.0,
@@ -64,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.greenAccent,
                   minWidth: double.infinity,
                   onPressed: () {
-                    nextQuestion();
+                    checkAnswer(true);
                   },
                   child: Text("Verdadero"),
                 ),
@@ -78,12 +112,13 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.redAccent,
                   minWidth: double.infinity,
                   onPressed: () {
-                    nextQuestion();
+                    checkAnswer(false);
                   },
                   child: Text("Falso"),
                 ),
               ),
             ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: score),
           ],
         ),
       ),
