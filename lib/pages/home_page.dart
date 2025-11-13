@@ -6,13 +6,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String questionText = "¿El hombre llegó a la luna?";
+  // Lista Preguntas
   List<String> questions = [
     "El hombre llegó a la luna",
     "¿Has cenado hoy?",
     "¿Saliste ayer?",
     "¿Has desayunado?",
     "¿Sientes frio?",
+    "El sol es una estrella",
+    "Flutter usa Dart",
   ];
   int questionIndex = 0;
 
@@ -20,7 +22,7 @@ class _HomePageState extends State<HomePage> {
     if (questionIndex < questions.length - 1) {
       questionIndex++;
     } else {
-      questionIndex = 0;
+      print("Se acabaron las preguntas");
     }
     setState(() {});
   }
@@ -28,23 +30,59 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Quizz App"), centerTitle: true),
+      backgroundColor: Color(0xff262626),
+
+      appBar: AppBar(
+        title: Text("Quizz App"),
+        centerTitle: true,
+        backgroundColor: Color(0xff262626),
+        foregroundColor: Colors.white,
+      ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(questions[questionIndex]),
-            SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: () {
-                nextQuestion();
-              },
-              child: Text("Verdadero"),
+            Expanded(
+              flex: 5,
+              child: Center(
+                child: Text(
+                  questions[questionIndex],
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                nextQuestion();
-              },
-              child: Text("Falso"),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: MaterialButton(
+                  color: Colors.greenAccent,
+                  minWidth: double.infinity,
+                  onPressed: () {
+                    nextQuestion();
+                  },
+                  child: Text("Verdadero"),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: MaterialButton(
+                  color: Colors.redAccent,
+                  minWidth: double.infinity,
+                  onPressed: () {
+                    nextQuestion();
+                  },
+                  child: Text("Falso"),
+                ),
+              ),
             ),
           ],
         ),
