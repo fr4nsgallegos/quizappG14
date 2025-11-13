@@ -37,6 +37,40 @@ class _HomePageState extends State<HomePage> {
 
     if (quizbrain.isFinishedFunc()) {
       print("El cuestionario ha terminado");
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.warning, color: Colors.orange),
+                Text("Alerta"),
+              ],
+            ),
+            content: Text("Has llegado al final del formulario"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("Cancel"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  quizbrain.restartQuizz();
+                  Navigator.pop(context);
+                  score.clear();
+                  setState(() {});
+                },
+                child: Text("Ok"),
+              ),
+            ],
+          );
+        },
+      );
+      return;
     } else {
       quizbrain.nextQuestion();
     }
